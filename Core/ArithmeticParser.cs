@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace Core
 {
+    /// <summary>
+    /// Парсер арифметических выражений
+    /// Данны класс реализует сущность позволяющую
+    /// преобразовывать выражение типа строка в число например,
+    /// input: 2+2*2-(2+2/2)
+    /// output: 3
+    /// </summary>
     public static class ArithmeticParser
     {
         private static string Str { get; set; }
@@ -17,6 +24,11 @@ namespace Core
             return _count;
         };
 
+        /// <summary>
+        /// Метод парсинга арифметического выражения.
+        /// </summary>
+        /// <param name="str">Принимает строку в виде арифметического выражения.</param>
+        /// <returns>Возвращает строку содержащию ответ.</returns>
         public static string ToParse(string str)
         {
             double outpute = 0;
@@ -25,7 +37,7 @@ namespace Core
                 Str = "(" + str + ")";
                 if (IfBracketsEqual())
                 {
-                    outpute = ExpressionHandling(Str);
+                    outpute = ExpressionHandling();
                     if (Double.IsInfinity(outpute))
                         return "Деление на ноль невозможно";
 
@@ -35,18 +47,22 @@ namespace Core
             return "Empty line";
         }
 
-        private static double ExpressionHandling(string str)
+        /// <summary>
+        /// Метод парсит выражение и выполняет арифмитические действия над операндами
+        /// </summary>
+        /// <returns>Возвращает результат выражения</returns>
+        private static double ExpressionHandling()
         {
             int i = 0;
             char chr;
             Stack<double> number = new Stack<double>();
             Stack<char> operation = new Stack<char>();
-            while (i < str.Length)
+            while (i < Str.Length)
             {
-                chr = str[i];
+                chr = Str[i];
                 if (Char.IsDigit(chr))
                 {
-                    number.Push(Double.Parse(NumberConcatination(ref i, str)));
+                    number.Push(Double.Parse(NumberConcatination(ref i, Str)));
                 }
                 else if (operation.Count == 0 || chr == '(')
                 {
@@ -86,7 +102,7 @@ namespace Core
                     }
                     operation.Pop();
                 }
-                if (i < str.Length)
+                if (i < Str.Length)
                     i++;
             }
             return number.Pop();
@@ -112,6 +128,11 @@ namespace Core
             return _joinStr;
         }
 
+        /// <summary>
+        /// Метод производит арифметическую операцию над операндами
+        /// </summary>
+        /// <param name="chr">Оператор</param>
+        /// <param name="num">Стек с числами</param>
         private static void Calc(char chr, ref Stack<double> num)
         {
             double buff = 0;
@@ -136,6 +157,11 @@ namespace Core
             }
         }
 
+        /// <summary>
+        /// Метод определяет приоритет операции
+        /// </summary>
+        /// <param name="chr">Оператор</param>
+        /// <returns>Возвращает приориет оператора</returns>
         private static byte PriorityOperation(char chr)
         {
             switch (chr)
