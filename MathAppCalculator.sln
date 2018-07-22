@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathAppCalculator", "MathAppCalculator\MathAppCalculator.csproj", "{7045D63E-D935-442A-B1E7-FC8BC2AB2B37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{FB23233E-23F9-4A1A-96CC-518469E388FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7045D63E-D935-442A-B1E7-FC8BC2AB2B37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7045D63E-D935-442A-B1E7-FC8BC2AB2B37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7045D63E-D935-442A-B1E7-FC8BC2AB2B37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7045D63E-D935-442A-B1E7-FC8BC2AB2B37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE19505B-AD64-4399-B665-7D768E9AF523}
+	EndGlobalSection
+EndGlobal
