@@ -28,7 +28,7 @@ namespace Core
         /// Метод парсинга арифметического выражения.
         /// </summary>
         /// <param name="str">Принимает строку в виде арифметического выражения.</param>
-        /// <returns>Возвращает строку содержащию ответ.</returns>
+        /// <returns>Возвращает строку содержащию ответ или сообщение об ошибке</returns>
         public static string ToParse(string str)
         {
             double outpute = 0;
@@ -38,94 +38,110 @@ namespace Core
                 if (IfBracketsEqual())
                 {
                     outpute = ExpressionHandling();
+                    if (Double.IsNaN(outpute))
+                        return "Не хватает операнда";
                     if (Double.IsInfinity(outpute))
                         return "Деление на ноль невозможно";
 
                     return outpute.ToString();
                 }
             }
-            return "Empty line";
+            return "Не хватает скобок";
         }
 
         /// <summary>
         /// Метод парсит выражение и выполняет арифмитические действия над операндами
         /// </summary>
-        /// <returns>Возвращает результат выражения</returns>
+        /// <returns>Возвращает результат выражения, или NaN если не хватает операнда.</returns>
         private static double ExpressionHandling()
         {
-            int i = 0;
+            short i = 0;
             char chr;
             Stack<double> number = new Stack<double>();
             Stack<char> operation = new Stack<char>();
-            while (i < Str.Length)
+            try
             {
-                chr = Str[i];
-                if (Char.IsDigit(chr))
+                while (i < Str.Length)
                 {
-                    number.Push(Double.Parse(NumberConcatination(ref i, Str)));
-                }
-                else if (operation.Count == 0 || chr == '(')
-                {
-                    operation.Push(chr);
-                }
-                else if (chr == '+' || chr == '-' || chr == '*' || chr == '/')
-                {
-                    if (PriorityOperation(chr) > PriorityOperation(operation.Peek()))
+                    chr = Str[i];
+                    if (Char.IsDigit(chr) || chr == '~')
+                    {
+                        number.Push(NumberConcatination(ref i));
+                    }
+                    else if (operation.Count == 0 || chr == '(')
                     {
                         operation.Push(chr);
                     }
-                    else if (PriorityOperation(chr) == PriorityOperation(operation.Peek()))
+                    else if (chr == '+' || chr == '-' || chr == '*' || chr == '/')
                     {
-                        while (operation.Count != 0 && (PriorityOperation(chr) == PriorityOperation(operation.Peek())))
+                        if (PriorityOperation(chr) > PriorityOperation(operation.Peek()))
                         {
-                            Calc(operation.Pop(), ref number);
+                            operation.Push(chr);
                         }
-                        if (operation.Count != 0 && (PriorityOperation(chr) > PriorityOperation(operation.Peek())))
+                        else if (PriorityOperation(chr) == PriorityOperation(operation.Peek()))
                         {
+                            while (operation.Count != 0 && (PriorityOperation(chr) == PriorityOperation(operation.Peek())))
+                            {
+                                Calc(operation.Pop(), ref number);
+                            }
+                            if (operation.Count != 0 && (PriorityOperation(chr) > PriorityOperation(operation.Peek())))
+                            {
+                                operation.Push(chr);
+                            }
+                        }
+                        else
+                        {
+                            while (PriorityOperation(chr) < PriorityOperation(operation.Peek()))
+                            {
+                                Calc(operation.Pop(), ref number);
+                            }
                             operation.Push(chr);
                         }
                     }
                     else
                     {
-                        while (PriorityOperation(chr) < PriorityOperation(operation.Peek()))
+                        while (operation.Peek() != '(')
                         {
                             Calc(operation.Pop(), ref number);
                         }
-                        operation.Push(chr);
+                        operation.Pop();
                     }
+                    if (i < Str.Length)
+                        i++;
                 }
-                else
-                {
-                    while (operation.Peek() != '(')
-                    {
-                        Calc(operation.Pop(), ref number);
-                    }
-                    operation.Pop();
-                }
-                if (i < Str.Length)
-                    i++;
             }
+            catch (InvalidOperationException)
+            {
+                return Double.NaN;
+            }
+
             return number.Pop();
         }
 
-        private static string NumberConcatination(ref int index, string str)
+        /// <summary>
+        /// Метод конкатенирует последоватльность чисел в строку
+        /// </summary>
+        /// <param name="index">Индекс массива</param>
+        /// <returns>Возвращает строку</returns>
+        private static double NumberConcatination(ref short index)
         {
-            string buffer = String.Empty;
-            int j = index;
-            while (Char.IsDigit(str[j]))
-            {
-                buffer += str[j];
-                j++;
-            }
-            index = (j - 1);
-            return buffer;
-        }
+            short i = index;
+            bool isNegative = false;
+            string _buffer = String.Empty;
 
-        private static string FractionalNumber(string[] str)
-        {
-            string _joinStr = "";
-            _joinStr = string.Join(_joinStr, str, 0, str.Length);
-            return _joinStr;
+            if (Str[i] == '~')
+            {
+                i++;
+                isNegative = true;
+            }
+
+            while (Char.IsDigit(Str[i]) || Str[i] == ',')
+            {
+                _buffer += Str[i];
+                i++;
+            }
+            index = --i;
+            return isNegative ? (Double.Parse(_buffer) * -1) : Double.Parse(_buffer);
         }
 
         /// <summary>
@@ -135,24 +151,24 @@ namespace Core
         /// <param name="num">Стек с числами</param>
         private static void Calc(char chr, ref Stack<double> num)
         {
-            double buff = 0;
+            double _buff = 0;
             switch (chr)
             {
                 case '+':
-                    buff = num.Pop();
-                    num.Push(num.Pop() + buff);
+                    _buff = num.Pop();
+                    num.Push(num.Pop() + _buff);
                     break;
                 case '-':
-                    buff = num.Pop();
-                    num.Push(num.Pop() - buff);
+                    _buff = num.Pop();
+                    num.Push(num.Pop() - _buff);
                     break;
                 case '*':
-                    buff = num.Pop();
-                    num.Push(num.Pop() * buff);
+                    _buff = num.Pop();
+                    num.Push(num.Pop() * _buff);
                     break;
                 case '/':
-                    buff = num.Pop();
-                    num.Push(num.Pop() / buff);
+                    _buff = num.Pop();
+                    num.Push(num.Pop() / _buff);
                     break;
             }
         }
@@ -179,7 +195,7 @@ namespace Core
 
         private static bool IfBracketsEqual()
         {
-            return (countS('(') == countS(')'));
+            return countS('(') == countS(')');
         }
 
     }

@@ -29,7 +29,10 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((str) =>
                 {
-                    if (Expression == _ExpressionText) { Expression = ""; }
+                    if (Expression == _ExpressionText || Expression == "Не хватает операнда" || Expression == "Деление на ноль невозможно" || Expression == "Не хватает скобок")
+                    {
+                        Expression = "";
+                    }
                     Expression += str.ToString();
                 });
             }
@@ -43,7 +46,7 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((str) => 
                 {
-                    if((Expression != _ExpressionText && (Expression.Last() >= '0' && Expression.Last() <= '9')) || Expression.Last() == ')')
+                    if((Expression != _ExpressionText && Char.IsDigit(Expression.Last())) || Expression.Last() == ')')
                         Expression += str.ToString();
                 });
             }
@@ -58,8 +61,9 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) => 
                 {
-                    if(Expression != _ExpressionText)
-                        Expression = Core.ArithmeticParser.ToParse(Expression);
+                    if (Expression != _ExpressionText)
+                        Expression = Core.ArithmeticParser.ToParse(Expression.Replace('×', '*')
+                            .Replace('÷', '/').Replace('.', ','));
                 });
             }
         }
@@ -70,7 +74,7 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) => 
                 {
-                    if (!(Expression.Last() >= '0' && Expression.Last() <= '9'))
+                    if (!Char.IsDigit(Expression.Last()))
                     {
                         if (Expression == _ExpressionText)
                             Expression = "";
@@ -86,7 +90,7 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) =>
                 {
-                    if (Expression != _ExpressionText && (Expression.Last() >= '0' && Expression.Last() <= '9'))
+                    if (Expression != _ExpressionText && Char.IsDigit(Expression.Last()))
                     {
                         Expression += ")";
                     }
@@ -103,7 +107,7 @@ namespace MathAppCalculator.ViewModel
                     if ((Expression.Last() == '(' || Expression.Last() == '*' || Expression.Last() == '/') || Expression == _ExpressionText) {
                         if (Expression == "Выражение")
                             Expression = "";
-                        Expression += "-";
+                        Expression += "~";
                     }
                 });
             }
@@ -115,7 +119,7 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) => 
                 {
-                    if (Expression.Last() >= '0' && Expression.Last() <= '9')
+                    if (Char.IsDigit(Expression.Last()))
                         Expression += ".";
                 });
             }

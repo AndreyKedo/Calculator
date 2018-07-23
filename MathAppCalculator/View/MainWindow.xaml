@@ -19,7 +19,7 @@
                      Width="Auto" Height="78" 
                      IsReadOnly="True" FontSize="25"
                      TextAlignment="Right" VerticalContentAlignment="Center"
-                     FontFamily="Open Sans Light">
+                     FontFamily="Open Sans Light" TextWrapping="Wrap">
         </TextBox>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -29,11 +29,11 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            
+
             <StackPanel Grid.Row="0">
                 <Button Content="(" Command="{Binding LeftBrackets}"/>
                 <Button Content=")" Command="{Binding RightBrackets}"/>
-                <Button Content="±" Command="{Binding Negative}" IsEnabled="False"/>
+                <Button Content="±" Command="{Binding Negative}"/>
                 <Button Content="C" Command="{Binding Clean}"/>
             </StackPanel>
             
@@ -56,14 +56,14 @@
                 <Button Content="1" Command="{Binding Number}" CommandParameter="1"/>
                 <Button Content="2" Command="{Binding Number}" CommandParameter="2"/>
                 <Button Content="3" Command="{Binding Number}" CommandParameter="3"/>
-                <Button Content="×" Command="{Binding Operation}" CommandParameter="*"/>
+                <Button Content="×" Command="{Binding Operation}" CommandParameter="×"/>
             </StackPanel>
 
             <StackPanel  Grid.Row="4">
                 <Button Content="0" Command="{Binding Number}" CommandParameter="0"/>
-                <Button Content="." Command="{Binding Dot}" IsEnabled="False"/>
+                <Button Content="." Command="{Binding Dot}"/>
                 <Button Content= "=" Command="{Binding Calc}"/>
-                <Button Content="÷" Command="{Binding Operation}" CommandParameter="/"/>
+                <Button Content="÷" Command="{Binding Operation}" CommandParameter="÷"/>
             </StackPanel>
         </Grid>
     </Grid>
