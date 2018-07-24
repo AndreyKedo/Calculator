@@ -7,6 +7,7 @@ namespace MathAppCalculator.ViewModel
 {
     class ViewModel : INotifyPropertyChanged
     {
+        bool IsOperatorPressed = true;
         private const string _ExpressionText = "Выражение";
         private string _Expression = _ExpressionText;
         public string Expression
@@ -47,7 +48,10 @@ namespace MathAppCalculator.ViewModel
                 return new DelegateCommand((str) => 
                 {
                     if((Expression != _ExpressionText && Char.IsDigit(Expression.Last())) || Expression.Last() == ')')
+                    {
                         Expression += str.ToString();
+                        IsOperatorPressed = true;
+                    }
                 });
             }
         }
@@ -62,8 +66,12 @@ namespace MathAppCalculator.ViewModel
                 return new DelegateCommand((obj) => 
                 {
                     if (Expression != _ExpressionText)
+                    {
                         Expression = Core.ArithmeticParser.ToParse(Expression.Replace('×', '*')
-                            .Replace('÷', '/').Replace('.', ','));
+                            .Replace('÷', '/')
+                            .Replace('.', ','));
+                        IsOperatorPressed = true;
+                    }
                 });
             }
         }
@@ -79,6 +87,7 @@ namespace MathAppCalculator.ViewModel
                         if (Expression == _ExpressionText)
                             Expression = "";
                         Expression += "(";
+                        IsOperatorPressed = true;
                     }
                 });
             }
@@ -93,6 +102,7 @@ namespace MathAppCalculator.ViewModel
                     if (Expression != _ExpressionText && Char.IsDigit(Expression.Last()))
                     {
                         Expression += ")";
+                        IsOperatorPressed = true;
                     }
                 });
             }
@@ -119,8 +129,11 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) => 
                 {
-                    if (Char.IsDigit(Expression.Last()))
+                    if (Char.IsDigit(Expression.Last()) && IsOperatorPressed)
+                    {
                         Expression += ".";
+                        IsOperatorPressed = false;
+                    }
                 });
             }
         }
@@ -132,6 +145,7 @@ namespace MathAppCalculator.ViewModel
                 return new DelegateCommand((obj) =>
                 {
                     Expression = _ExpressionText;
+                    IsOperatorPressed = true;
                 });
             }
         }

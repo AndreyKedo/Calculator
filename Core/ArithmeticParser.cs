@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace Core
 {
     /// <summary>
-    /// Парсер арифметических выражений
-    /// Данны класс реализует сущность позволяющую
+    /// Парсер арифметических выражений.
+    /// Данный класс реализует сущность позволяющий
     /// преобразовывать выражение типа строка в число например,
     /// input: 2+2*2-(2+2/2)
     /// output: 3
@@ -27,7 +27,7 @@ namespace Core
         /// <summary>
         /// Метод парсинга арифметического выражения.
         /// </summary>
-        /// <param name="str">Принимает строку в виде арифметического выражения.</param>
+        /// <param name="str">Принимает строку в виде арифметического выражения</param>
         /// <returns>Возвращает строку содержащию ответ или сообщение об ошибке</returns>
         public static string ToParse(string str)
         {
@@ -50,9 +50,9 @@ namespace Core
         }
 
         /// <summary>
-        /// Метод парсит выражение и выполняет арифмитические действия над операндами
+        /// Метод парсит выражение и выполняет арифмитические действия над операндами.
         /// </summary>
-        /// <returns>Возвращает результат выражения, или NaN если не хватает операнда.</returns>
+        /// <returns>Возвращает результат выражения, или NaN если не хватает операнда</returns>
         private static double ExpressionHandling()
         {
             short i = 0;
@@ -119,20 +119,20 @@ namespace Core
         }
 
         /// <summary>
-        /// Метод конкатенирует последоватльность чисел в строку
+        /// Метод конкатенирует последоватльность чисел в строку.
         /// </summary>
         /// <param name="index">Индекс массива</param>
         /// <returns>Возвращает строку</returns>
         private static double NumberConcatination(ref short index)
         {
             short i = index;
-            bool isNegative = false;
+            bool IsNegative = false;
             string _buffer = String.Empty;
 
             if (Str[i] == '~')
             {
                 i++;
-                isNegative = true;
+                IsNegative = true;
             }
 
             while (Char.IsDigit(Str[i]) || Str[i] == ',')
@@ -141,14 +141,14 @@ namespace Core
                 i++;
             }
             index = --i;
-            return isNegative ? (Double.Parse(_buffer) * -1) : Double.Parse(_buffer);
+            return IsNegative ? (Double.Parse(_buffer) * -1) : Double.Parse(_buffer);
         }
 
         /// <summary>
-        /// Метод производит арифметическую операцию над операндами
+        /// Метод производит арифметическую операцию над операндами.
         /// </summary>
         /// <param name="chr">Оператор</param>
-        /// <param name="num">Стек с числами</param>
+        /// <param name="num">Стек с операндами</param>
         private static void Calc(char chr, ref Stack<double> num)
         {
             double _buff = 0;
@@ -174,7 +174,7 @@ namespace Core
         }
 
         /// <summary>
-        /// Метод определяет приоритет операции
+        /// Метод определяет приоритет оператора.
         /// </summary>
         /// <param name="chr">Оператор</param>
         /// <returns>Возвращает приориет оператора</returns>
