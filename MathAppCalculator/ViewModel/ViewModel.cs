@@ -98,7 +98,7 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) =>
                 {
-                    if ((Expression != _ExpressionText && Char.IsDigit(Expression.Last())) || Expression.Last() == ')')
+                    if ((Char.IsDigit(Expression.Last())) || Expression.Last() == ')')
                     {
                         Expression += ")";
                         IsOperatorPressed = true;
