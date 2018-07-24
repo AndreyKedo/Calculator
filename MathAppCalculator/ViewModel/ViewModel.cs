@@ -30,10 +30,8 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((str) =>
                 {
-                    if (Expression == _ExpressionText || Expression == "Не хватает операнда" || Expression == "Деление на ноль невозможно" || Expression == "Не хватает скобок")
-                    {
+                    if (Expression.All(char.IsLetter))
                         Expression = "";
-                    }
                     Expression += str.ToString();
                 });
             }
@@ -100,7 +98,7 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) =>
                 {
-                    if (Expression != _ExpressionText && Char.IsDigit(Expression.Last()))
+                    if ((Expression != _ExpressionText && Char.IsDigit(Expression.Last())) || Expression.Last() == ')')
                     {
                         Expression += ")";
                         IsOperatorPressed = true;

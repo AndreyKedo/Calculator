@@ -32,19 +32,16 @@ namespace Core
         public static string ToParse(string str)
         {
             double outpute = 0;
-            if (str != "")
+            Str = "(" + str + ")";
+            if (IfBracketsEqual())
             {
-                Str = "(" + str + ")";
-                if (IfBracketsEqual())
-                {
-                    outpute = ExpressionHandling();
-                    if (Double.IsNaN(outpute))
-                        return "Не хватает операнда";
-                    if (Double.IsInfinity(outpute))
-                        return "Деление на ноль невозможно";
+                outpute = ExpressionHandling();
+                if (Double.IsNaN(outpute))
+                    return "Не хватает операнда";
+                if (Double.IsInfinity(outpute))
+                    return "Деление на ноль невозможно";
 
-                    return outpute.ToString();
-                }
+                return outpute.ToString();
             }
             return "Не хватает скобок";
         }
@@ -106,8 +103,7 @@ namespace Core
                         }
                         operation.Pop();
                     }
-                    if (i < Str.Length)
-                        i++;
+                    i++;
                 }
             }
             catch (InvalidOperationException)
