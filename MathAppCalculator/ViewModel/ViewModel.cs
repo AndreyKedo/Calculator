@@ -65,11 +65,12 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) => 
                 {
-                    if (Expression != _ExpressionText)
+                    if (Expression != _ExpressionText && Expression.Last() != '~')
                     {
                         Expression = Core.ArithmeticParser.ToParse(Expression.Replace('×', '*')
                             .Replace('÷', '/')
                             .Replace('.', ','));
+                        Expression = Expression.Replace('-', '~');
                         IsOperatorPressed = true;
                     }
                 });
@@ -82,7 +83,7 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) => 
                 {
-                    if (!Char.IsDigit(Expression.Last()))
+                    if (!Char.IsDigit(Expression.Last()) && Expression.Last() != '~')
                     {
                         if (Expression == _ExpressionText)
                             Expression = "";
@@ -115,7 +116,6 @@ namespace MathAppCalculator.ViewModel
                 return new DelegateCommand((obj) => 
                 {
                     if ((Expression.Last() == '(' || Expression.Last() == '*' || Expression.Last() == '/') || Expression == _ExpressionText) {
-                        if (Expression == "Выражение")
                             Expression = "";
                         Expression += "~";
                     }
