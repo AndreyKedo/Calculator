@@ -81,7 +81,7 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) => 
                 {
-                    if (!Char.IsDigit(Expression.Last()) && Expression.Last() != '~')
+                    if (!Char.IsDigit(Expression.Last()) && Expression.Last() != '~' && Expression.Last() != '.')
                     {
                         if (Expression == _ExpressionText)
                             Expression = "";
