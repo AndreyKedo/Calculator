@@ -114,6 +114,7 @@ namespace MathAppCalculator.ViewModel
                 return new DelegateCommand((obj) => 
                 {
                     if ((Expression.Last() == '(' || Expression.Last() == '*' || Expression.Last() == '/') || Expression == _ExpressionText) {
+                        if(Expression == _ExpressionText)
                             Expression = "";
                         Expression += "~";
                     }
