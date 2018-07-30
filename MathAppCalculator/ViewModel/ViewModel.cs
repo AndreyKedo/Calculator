@@ -150,7 +150,7 @@ namespace MathAppCalculator.ViewModel
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string str)
+        protected void OnPropertyChanged(string str)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(str));
         }
