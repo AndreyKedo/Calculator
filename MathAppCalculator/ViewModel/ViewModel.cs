@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Windows.Input;
-using System.ComponentModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace MathAppCalculator.ViewModel
 {
-    class ViewModel : INotifyPropertyChanged
+    class ViewModel : BaseViewModel
     {
         bool IsOperatorPressed = true;
         private const string _ExpressionText = "Выражение";
@@ -43,14 +42,14 @@ namespace MathAppCalculator.ViewModel
         {
             get
             {
-                return new DelegateCommand((str) => 
+                return new DelegateCommand((str) =>
                 {
-                    if((Char.IsDigit(Expression.Last())) || Expression.Last() == ')')
-                    {
-                        Expression += str.ToString();
-                        IsOperatorPressed = true;
-                    }
-                });
+                    Expression += str.ToString();
+                    IsOperatorPressed = true;
+                }, (obj) =>
+                 {
+                     return ((Char.IsDigit(Expression.Last())) || Expression.Last() == ')');
+                 });
             }
         }
         #endregion
@@ -61,17 +60,17 @@ namespace MathAppCalculator.ViewModel
         {
             get
             {
-                return new DelegateCommand((obj) => 
+                return new DelegateCommand((obj) =>
                 {
-                    if (Expression != _ExpressionText && Expression.Last() != '~')
-                    {
-                        Expression = Core.ArithmeticParser.ToParse(Expression.Replace('×', '*')
-                            .Replace('÷', '/')
-                            .Replace('.', ','));
-                        Expression = Expression.Replace('-', '~');
+                    Expression = Core.ArithmeticParser.ToParse(Expression.Replace('×', '*').Replace('÷', '/'));
+                    Expression = Expression.Replace('-', '~');
+
+                    if (!Expression.Any((ch) => { return ch == ','; }))
                         IsOperatorPressed = true;
-                    }
-                });
+                }, (obj) =>
+                 {
+                     return (Expression != _ExpressionText && Expression.Last() != '~');
+                 });
             }
         }
 
@@ -79,15 +78,15 @@ namespace MathAppCalculator.ViewModel
         {
             get
             {
-                return new DelegateCommand((obj) => 
+                return new DelegateCommand((obj) =>
                 {
-                    if (!Char.IsDigit(Expression.Last()) && Expression.Last() != '~' && Expression.Last() != '.')
-                    {
-                        if (Expression == _ExpressionText)
-                            Expression = "";
-                        Expression += "(";
-                        IsOperatorPressed = true;
-                    }
+                    if (Expression == _ExpressionText)
+                        Expression = "";
+                    Expression += "(";
+                    IsOperatorPressed = true;
+                }, (obj) =>
+                {
+                    return !Char.IsDigit(Expression.Last()) && Expression.Last() != '~' && Expression.Last() != '.';
                 });
             }
         }
@@ -98,11 +97,11 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) =>
                 {
-                    if ((Char.IsDigit(Expression.Last())) || Expression.Last() == ')')
-                    {
-                        Expression += ")";
-                        IsOperatorPressed = true;
-                    }
+                    Expression += ")";
+                    IsOperatorPressed = true;
+                }, (obj) =>
+                {
+                    return Char.IsDigit(Expression.Last()) || Expression.Last() == ')';
                 });
             }
         }
@@ -111,13 +110,14 @@ namespace MathAppCalculator.ViewModel
         {
             get
             {
-                return new DelegateCommand((obj) => 
+                return new DelegateCommand((obj) =>
                 {
-                    if ((Expression.Last() == '(' || Expression.Last() == '*' || Expression.Last() == '/') || Expression == _ExpressionText) {
-                        if(Expression == _ExpressionText)
-                            Expression = "";
-                        Expression += "~";
-                    }
+                    if (Expression == _ExpressionText)
+                        Expression = "";
+                    Expression += "~";
+                }, (obj) =>
+                {
+                    return ((Expression.Last() == '(' || Expression.Last() == '*' || Expression.Last() == '/') || Expression == _ExpressionText);
                 });
             }
         }
@@ -126,14 +126,14 @@ namespace MathAppCalculator.ViewModel
         {
             get
             {
-                return new DelegateCommand((obj) => 
+                return new DelegateCommand((obj) =>
                 {
-                    if (Char.IsDigit(Expression.Last()) && IsOperatorPressed)
-                    {
-                        Expression += ".";
-                        IsOperatorPressed = false;
-                    }
-                });
+                    Expression += ",";
+                    IsOperatorPressed = false;
+                }, (obj) =>
+                 {
+                     return Char.IsDigit(Expression.Last()) && IsOperatorPressed;
+                 });
             }
         }
 
@@ -149,45 +149,5 @@ namespace MathAppCalculator.ViewModel
             }
         }
         #endregion
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string str)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(str));
-        }
     }
-
-    class DelegateCommand : ICommand
-    {
-        private Action<object> action;
-        private Func<object, bool> func;
-
-        public DelegateCommand(Action<object> actionExecute, Func<object, bool> funcExecute)
-        {
-            action = actionExecute;
-            func = funcExecute;
-        }
-
-        public DelegateCommand(Action<object> actionExecute) : this(actionExecute, null)
-        {
-            action = actionExecute;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return func != null ? func.Invoke(parameter) : true;
-        }
-
-        public void Execute(object parameter)
-        {
-            action?.Invoke(parameter);
-        }
-
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-    }
-
 }

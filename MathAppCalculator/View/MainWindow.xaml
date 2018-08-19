@@ -61,7 +61,7 @@
 
             <StackPanel  Grid.Row="4">
                 <Button Content="0" Command="{Binding Number}" CommandParameter="0"/>
-                <Button Content="." Command="{Binding Dot}"/>
+                <Button Content="," Command="{Binding Dot}"/>
                 <Button Content= "=" Command="{Binding Calc}"/>
                 <Button Content="÷" Command="{Binding Operation}" CommandParameter="÷"/>
             </StackPanel>
