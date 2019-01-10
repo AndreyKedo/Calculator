@@ -13,6 +13,7 @@
             <Setter Property="Height" Value="53"/>
             <Setter Property="Width" Value="71" />
             <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontFamily" Value="Open Sans"/>
         </Style>
 
         <Style TargetType="Button" BasedOn="{StaticResource NumberButtonStyle}" />

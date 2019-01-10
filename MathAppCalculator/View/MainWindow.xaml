@@ -4,23 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:MathAppCalculator.ViewModel"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Калькулятор" Height="400" Width="300" ResizeMode="CanMinimize">
+    Title="Калькулятор" Height="400" Width="300" ResizeMode="CanMinimize">
     <Window.DataContext>
         <vm:ViewModel/>
         <!--Подключаю VIEWMODEl-->
     </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <x:Static x:Key="empty" Member="sys:String.Empty" />
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <TextBox Text="{Binding Expression}" Grid.Row="0" 
-                     Width="Auto" Height="78" 
-                     IsReadOnly="True" FontSize="25"
-                     TextAlignment="Right" VerticalContentAlignment="Center"
-                     FontFamily="Open Sans Light" TextWrapping="Wrap">
-        </TextBox>
+        <TextBlock Text="{Binding Expression, TargetNullValue=Выражение}" Grid.Row="0" 
+                     Width="Auto" Height="36" 
+                     FontSize="25"
+                     TextAlignment="Right"
+                     FontFamily="Open Sans" TextWrapping="Wrap" Margin="0,0,2,0" Padding="0,0,7,0"/>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition />

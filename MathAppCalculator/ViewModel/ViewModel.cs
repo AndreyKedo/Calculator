@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Input;
+using MathAppCalculator.Model;
 
 namespace MathAppCalculator.ViewModel
 {
     class ViewModel : BaseViewModel
     {
         bool IsOperatorPressed = true;
-        private const string _ExpressionText = "Выражение";
-        private string _Expression = _ExpressionText;
+        private string _Expression = string.Empty;
         public string Expression
         {
             get
             {
+                if (_Expression == string.Empty)
+                    return null;
                 return _Expression;
             }
             set
@@ -29,7 +31,7 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((str) =>
                 {
-                    if (Expression.All(char.IsLetter))
+                    if (_Expression.All(char.IsLetter))
                         Expression = "";
                     Expression += str.ToString();
                 });
@@ -48,7 +50,9 @@ namespace MathAppCalculator.ViewModel
                     IsOperatorPressed = true;
                 }, (obj) =>
                  {
-                     return ((Char.IsDigit(Expression.Last())) || Expression.Last() == ')');
+                     if (_Expression != string.Empty)
+                         return ((char.IsDigit(_Expression.Last())) || _Expression.Last() == ')');
+                     return false;
                  });
             }
         }
@@ -62,14 +66,14 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) =>
                 {
-                    Expression = Core.ArithmeticParser.ToParse(Expression.Replace('×', '*').Replace('÷', '/'));
+                    Expression = ArithmeticParser.ToParse(Expression.Replace('×', '*').Replace('÷', '/'));
                     Expression = Expression.Replace('-', '~');
 
                     if (!Expression.Any((ch) => { return ch == ','; }))
                         IsOperatorPressed = true;
                 }, (obj) =>
                  {
-                     return (Expression != _ExpressionText && Expression.Last() != '~');
+                     return (_Expression != string.Empty && _Expression.Last() != '~');
                  });
             }
         }
@@ -80,13 +84,13 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) =>
                 {
-                    if (Expression == _ExpressionText)
-                        Expression = "";
                     Expression += "(";
                     IsOperatorPressed = true;
                 }, (obj) =>
                 {
-                    return !Char.IsDigit(Expression.Last()) && Expression.Last() != '~' && Expression.Last() != '.';
+                    if(_Expression != string.Empty)
+                        return (!char.IsDigit(_Expression.Last())) && _Expression.Last() != '~' && _Expression.Last() != '.';
+                    return true;
                 });
             }
         }
@@ -101,7 +105,9 @@ namespace MathAppCalculator.ViewModel
                     IsOperatorPressed = true;
                 }, (obj) =>
                 {
-                    return Char.IsDigit(Expression.Last()) || Expression.Last() == ')';
+                    if (_Expression != string.Empty)
+                        return (char.IsDigit(_Expression.Last()) || _Expression.Last() == ')') && IsOpenBracket();
+                    return false;
                 });
             }
         }
@@ -112,12 +118,12 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) =>
                 {
-                    if (Expression == _ExpressionText)
-                        Expression = "";
                     Expression += "~";
                 }, (obj) =>
                 {
-                    return ((Expression.Last() == '(' || Expression.Last() == '*' || Expression.Last() == '/') || Expression == _ExpressionText);
+                    if(_Expression != string.Empty)
+                        return _Expression != string.Empty ? _Expression.Last() == '(' || _Expression.Last() == '*' || _Expression.Last() == '/' : false;
+                    return _Expression == string.Empty;
                 });
             }
         }
@@ -132,7 +138,9 @@ namespace MathAppCalculator.ViewModel
                     IsOperatorPressed = false;
                 }, (obj) =>
                  {
-                     return Char.IsDigit(Expression.Last()) && IsOperatorPressed;
+                     if (_Expression != string.Empty)
+                         return char.IsDigit(_Expression.Last()) && IsOperatorPressed;
+                     return false;
                  });
             }
         }
@@ -143,11 +151,24 @@ namespace MathAppCalculator.ViewModel
             {
                 return new DelegateCommand((obj) =>
                 {
-                    Expression = _ExpressionText;
+                    Expression = string.Empty;
                     IsOperatorPressed = true;
+                }, (obj) => 
+                {
+                    return _Expression != string.Empty;
                 });
             }
         }
         #endregion
+
+        bool IsOpenBracket()
+        {
+            foreach(var chr in _Expression)
+            {
+                if (chr == '(')
+                    return true;
+            }
+            return false;
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Core
+namespace MathAppCalculator.Model
 {
     /// <summary>
     /// Парсер арифметических выражений.
@@ -13,7 +13,8 @@ namespace Core
     public static class ArithmeticParser
     {
         private static string Str { get; set; }
-        private static Func<char, uint> countS = (ch) =>
+
+        private static readonly Func<char, uint> countS = (ch) =>
         {
             uint _count = 0;
             for (int i = 0; i < Str.Length; i++)
@@ -36,9 +37,9 @@ namespace Core
             if (IfBracketsEqual())
             {
                 outpute = ExpressionHandling();
-                if (Double.IsNaN(outpute))
+                if (double.IsNaN(outpute))
                     return "Не хватает операнда";
-                if (Double.IsInfinity(outpute))
+                if (double.IsInfinity(outpute))
                     return "Деление на ноль невозможно";
 
                 return outpute.ToString();
@@ -61,7 +62,7 @@ namespace Core
                 while (i < Str.Length)
                 {
                     chr = Str[i];
-                    if (Char.IsDigit(chr) || chr == '~')
+                    if (char.IsDigit(chr) || chr == '~')
                     {
                         number.Push(NumberConcatination(ref i));
                     }
@@ -108,7 +109,7 @@ namespace Core
             }
             catch (InvalidOperationException)
             {
-                return Double.NaN;
+                return double.NaN;
             }
 
             return number.Pop();
@@ -123,7 +124,7 @@ namespace Core
         {
             short i = index;
             bool IsNegative = false;
-            string _buffer = String.Empty;
+            string _buffer = string.Empty;
 
             if (Str[i] == '~')
             {
@@ -131,13 +132,13 @@ namespace Core
                 IsNegative = true;
             }
 
-            while (Char.IsDigit(Str[i]) || Str[i] == ',')
+            while (char.IsDigit(Str[i]) || Str[i] == ',')
             {
                 _buffer += Str[i];
                 i++;
             }
             index = --i;
-            return IsNegative ? (Double.Parse(_buffer) * -1) : Double.Parse(_buffer);
+            return IsNegative ? (double.Parse(_buffer) * -1) : double.Parse(_buffer);
         }
 
         /// <summary>
@@ -185,8 +186,9 @@ namespace Core
                 case '*':
                 case '/':
                     return 3;
+                default:
+                    return 0;
             }
-            return 0;
         }
 
         private static bool IfBracketsEqual()

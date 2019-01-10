@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathAppCalculator", "MathAppCalculator\MathAppCalculator.csproj", "{7045D63E-D935-442A-B1E7-FC8BC2AB2B37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{FB23233E-23F9-4A1A-96CC-518469E388FF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,14 +21,6 @@ Global
 		{7045D63E-D935-442A-B1E7-FC8BC2AB2B37}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7045D63E-D935-442A-B1E7-FC8BC2AB2B37}.Release|x86.ActiveCfg = Release|x86
 		{7045D63E-D935-442A-B1E7-FC8BC2AB2B37}.Release|x86.Build.0 = Release|x86
-		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Debug|x86.Build.0 = Debug|Any CPU
-		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Release|x86.ActiveCfg = Release|x86
-		{FB23233E-23F9-4A1A-96CC-518469E388FF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
